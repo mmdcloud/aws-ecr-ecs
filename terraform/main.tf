@@ -182,8 +182,8 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attach
 resource "aws_ecs_task_definition" "nodeapp-task-definition" {
   family                   = "nodeapp-task-definition"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "1 vCPU"
-  memory                   = "3 GB"
+  cpu                      = 1024
+  memory                   = 2048
   execution_role_arn       = aws_iam_role.ecs-task-execution-role.arn
   task_role_arn            = aws_iam_role.ecs-task-execution-role.arn
   network_mode             = "awsvpc"
@@ -191,26 +191,25 @@ resource "aws_ecs_task_definition" "nodeapp-task-definition" {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
   }
-  container_definitions = <<TASK_DEFINITION
-[
-  {
-      "name"      : "nodeapp",
-      "image"     : "${aws_ecr_repository.nodeapp.repository_url}:latest",
-      "cpu"       : 1024,
-      "memory"    : 2048,
-      "essential" : true,
-      "portMappings" : [
-        {
-          "containerPort" : 80,
-          "hostPort"      : 80,
-          "name" : "nodeapp-http-80",
-          "appProtocol"   : "http",
-          "protocol"      : "tcp"
-        }
-      ]
-    }
-]
-TASK_DEFINITION  
+  container_definitions = jsonencode(
+    [
+      {
+        "name" : "nodeapp",
+        "image" : "${aws_ecr_repository.nodeapp.repository_url}:latest",
+        "cpu" : 1024,
+        "memory" : 2048,
+        "essential" : true,
+        "portMappings" : [
+          {
+            "containerPort" : 80,
+            "hostPort" : 80,
+            "name" : "nodeapp-http-80",
+            "appProtocol" : "http",
+            "protocol" : "tcp"
+          }
+        ]
+      }
+  ])
   # container_definitions = jsonencode([
   #   {
   #     name      = "nodeapp"
