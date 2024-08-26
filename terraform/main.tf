@@ -39,10 +39,6 @@ data "aws_iam_policy_document" "codebuild_cache_bucket_policy_document" {
     effect  = "Allow"
     actions = ["s3:*"]
     resources = "*" 
-#[
-#      aws_s3_bucket.codebuild_cache_bucket.arn,
-#      "${aws_s3_bucket.codebuild_cache_bucket.arn}/*",
-#    ]
   }
 }
 
