@@ -40,6 +40,12 @@ data "aws_iam_policy_document" "codebuild_cache_bucket_policy_document" {
     actions = ["s3:*"]
     resources = ["*"] 
   }
+
+  statement {
+    effect  = "Allow"
+    actions = ["ecr:GetAuthorizationToken"]
+    resources = ["*"] 
+  }
 }
 
 resource "aws_iam_role_policy" "codebuild_cache_bucket_policy" {
