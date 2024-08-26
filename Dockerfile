@@ -3,8 +3,8 @@ ARG IMAGE_BASE=16-alpine
 
 FROM ${ARCH}node:$IMAGE_BASE
 LABEL Name="Node.js Demo App" Version=4.8.5
-LABEL org.opencontainers.image.source = "https://github.com/benc-uk/nodejs-demoapp"
-ENV NODE_ENV production
+LABEL org.opencontainers.image.source="https://github.com/benc-uk/nodejs-demoapp"
+ENV NODE_ENV=production
 WORKDIR /app 
 
 # For Docker layer caching do this BEFORE copying in rest of app
@@ -17,4 +17,3 @@ COPY . .
 # Port 3000 for our Express server 
 EXPOSE 80
 ENTRYPOINT ["npm", "start"]
-
