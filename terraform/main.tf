@@ -46,6 +46,12 @@ data "aws_iam_policy_document" "codebuild_cache_bucket_policy_document" {
     actions = ["ecr:GetAuthorizationToken"]
     resources = ["*"] 
   }
+
+  statement {
+    effect  = "Allow"
+    actions = ["ecr:InitiateLayerUpload"]
+    resources = [aws_ecr_repository.nodeapp.arn] 
+  }
 }
 
 resource "aws_iam_role_policy" "codebuild_cache_bucket_policy" {
