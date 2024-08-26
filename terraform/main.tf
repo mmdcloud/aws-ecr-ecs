@@ -197,25 +197,6 @@ resource "aws_codepipeline" "nodeapp_pipeline" {
       }
     }
   }
-
-  stage {
-    name = "Manual-Approval"
-
-    action {
-      run_order = 1
-      name             = "Admin-Approval"
-      category         = "Approval"
-      owner            = "AWS"
-      provider         = "Manual"
-      version          = "1"
-      input_artifacts  = []
-      output_artifacts = []
-
-      configuration = {
-        CustomData = "Please verify the output on the Build stage and only approve this step if you see expected changes!"
-      }
-    }
-  }
 }
 
 resource "aws_s3_bucket" "codepipeline_bucket" {
