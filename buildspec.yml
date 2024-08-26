@@ -16,12 +16,8 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - ContainerName="nodeapp"
-      - ImageURI=$(cat imageDetail.json | jq -r '.ImageURI')
-      - printf '[{"name":"CONTAINER_NAME","imageUri":"IMAGE_URI"}]' > imagedefinitions.json
-      - sed -i -e "s|CONTAINER_NAME|$ContainerName|g" imagedefinitions.json
-      - sed -i -e "s|IMAGE_URI|$ImageURI|g" imagedefinitions.json
-      - cat imagedefinitions.json
+      - echo Writing image definitions file...
+      - printf '[{"name":"hello-world","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
   files:
