@@ -143,7 +143,7 @@ resource "aws_codepipeline" "nodeapp_pipeline" {
 
       configuration = {
         ConnectionArn    = aws_codestarconnections_connection.codepipeline_codestart_connection.arn
-        FullRepositoryId = "mmdcloud/aws-autoscaling-with-load-balancing"
+        FullRepositoryId = "mmdcloud/aws-ecr-ecs"
         BranchName       = "master"
       }
     }
