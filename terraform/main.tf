@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "codebuild_cache_bucket_policy_document" {
 
   statement {
     effect  = "Allow"
-    actions = ["ecr:InitiateLayerUpload"]
+    actions = ["ecr:InitiateLayerUpload","ecr:UploadLayerPart"]
     resources = [aws_ecr_repository.nodeapp.arn] 
   }
 }
