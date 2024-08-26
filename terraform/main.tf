@@ -177,8 +177,8 @@ resource "aws_codepipeline" "nodeapp_pipeline" {
       owner            = "AWS"
       provider         = "Manual"
       version          = "1"
-      input_artifacts  = []
-      output_artifacts = []
+      input_artifacts  = ["build_output"]
+      output_artifacts = ["build_output"]
 
       configuration = {
         CustomData = "Please verify the output on the Build stage and only approve this step if you see expected changes!"
