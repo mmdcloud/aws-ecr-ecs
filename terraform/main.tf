@@ -36,21 +36,32 @@ data "aws_iam_policy_document" "codebuild_cache_bucket_policy_document" {
   }
 
   statement {
-    effect  = "Allow"
-    actions = ["s3:*"]
-    resources = ["*"] 
+    effect    = "Allow"
+    actions   = ["s3:*"]
+    resources = ["*"]
   }
 
   statement {
-    effect  = "Allow"
-    actions = ["ecr:GetAuthorizationToken"]
-    resources = ["*"] 
+    effect    = "Allow"
+    actions   = ["ecr:GetAuthorizationToken"]
+    resources = ["*"]
   }
 
   statement {
-    effect  = "Allow"
-    actions = ["ecr:InitiateLayerUpload","ecr:UploadLayerPart","ecr:CompleteLayerUpload"]
-    resources = [aws_ecr_repository.nodeapp.arn] 
+    effect    = "Allow"
+    actions   = [
+	"ecr:BatchGetImage",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:CompleteLayerUpload",
+        "ecr:DescribeImages",
+        "ecr:DescribeRepositories",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:InitiateLayerUpload",
+        "ecr:ListImages",
+        "ecr:PutImage",
+        "ecr:UploadLayerPart"
+    ]
+    resources = [aws_ecr_repository.nodeapp.arn]
   }
 }
 
@@ -231,6 +242,11 @@ resource "aws_iam_role" "codepipeline_role" {
   assume_role_policy = data.aws_iam_policy_document.codepipeline_assume_role.json
 }
 
+resource "aws_iam_role_policy_attachment" "codepipeline_ecs_full_access" {
+  role       = aws_iam_role.codepipeline_role.name
+  policy_arn  = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
+}
+
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "codepipeline_policy" {
@@ -279,6 +295,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
 
     resources = ["*"]
   }
+ 
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {
